@@ -1,0 +1,16 @@
+{
+    "prototxt": "MobileNetSSD_deploy.prototxt.txt",
+    "model": "MobileNetSSD_deploy.caffemodel",
+    "use_picamera": 0,
+    "camera_warmup_time": 2.0,
+    "resolution": [640, 480],
+    "fps": 16,
+    "confidence": 0.5,
+    "threshold": 0.3,
+    "image_input": "images/taxi.jpg",
+    "image_output": "output/taxi.jpg",
+    "video_codec": "MJPG",
+    "video_input": "videos/walking.avi",
+    "video_output": "output/detected_walking.avi",
+    "video_camera_output": "output/ssd_real_time.avi"
+}
