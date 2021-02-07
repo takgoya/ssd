@@ -24,7 +24,7 @@ Input video
 '''
 # initialize the video stream and allow the camera
 # sensor to warmup
-print("[INFO] warming up camera...")
+print("[SSD] warming up camera...")
 vs = VideoStream(usePiCamera=conf["use_picamera"],
                  resolution=tuple(conf["resolution"]),
                  framerate=conf["fps"]).start()
@@ -36,7 +36,7 @@ fps = FPS().start()
 writer = None
 # prepare variables for spatial dimensions of the frames
 h, w = None, None
-print("[INFO] starting video from camera ...")
+print("[SSD] starting video from camera ...")
 
 '''
 Load SSD network
@@ -52,8 +52,13 @@ prototxt_path = conf["prototxt"]
 model_path = conf["model"]
 
 # load SSD model from disk
-print("[INFO] loading SSD model from disk...")
+print("[SSD] loading model ...")
+start_time = time.time()
+print("[SSD] loading SSD model from disk...")
 net = cv2.dnn.readNetFromCaffe(prototxt_path, model_path)
+end_time = time.time()
+elapsed_time = end_time - start_time
+print("[SSD] model loaded ... took {} seconds".format(elapsed_time))
 
 # set minimum probability to filter weak detections
 minimum_probability = conf["confidence"]
@@ -158,11 +163,11 @@ Finish
 '''
 # stop the timer and display FPS information
 fps.stop()
-print("[INFO] elasped time: {:.2f}".format(fps.elapsed()))
-print("[INFO] approx. FPS: {:.2f}".format(fps.fps()))
+print("[SSD] elasped time: {:.2f}".format(fps.elapsed()))
+print("[SSD] approx. FPS: {:.2f}".format(fps.fps()))
 
 # do a bit of cleanup
-print("[INFO] cleaning up...")
+print("[SSD] cleaning up...")
 # release video reader and writer
 cv2.destroyAllWindows()
 vs.stop()

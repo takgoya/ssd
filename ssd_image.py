@@ -20,7 +20,7 @@ conf = json.load(open(args["conf"]))
 '''
 Image
 '''
-print("[INFO] loading image from file ...")
+print("[SSD] loading image from file ...")
 # load input image
 image = cv2.imread(conf["image_input"])
 # get spatial dimensions from input image
@@ -47,8 +47,13 @@ prototxt_path = conf["prototxt"]
 model_path = conf["model"]
 
 # load SSD model from disk
-print("[INFO] loading SSD model from disk...")
+print("[SSD] loading model ...")
+start_time = time.time()
+print("[SSD] loading SSD model from disk...")
 net = cv2.dnn.readNetFromCaffe(prototxt_path, model_path)
+end_time = time.time()
+elapsed_time = end_time - start_time
+print("[SSD] model loaded ... took {} seconds".format(elapsed_time))
 
 # set minimum probability to filter weak detections
 minimum_probability = conf["confidence"]
@@ -70,7 +75,7 @@ detections = net.forward()
 end = time.time()
 
 # show spent time for forward pass
-print("[INFO] objects detection took {:.6f} seconds".format(end - start))
+print("[SSD] objects detection took {:.6f} seconds".format(end - start))
 
 '''
 Get and Draw bounding boxes
@@ -88,7 +93,7 @@ for i in np.arange(0, detections.shape[2]):
         (startX, startY, endX, endY) = box.astype("int")
         # display the prediction
         label = "{}: {:.2f}%".format(labels[idx], confidence * 100)
-        print("[INFO] {}".format(label))
+        print("[SSD] {}".format(label))
         cv2.rectangle(image, (startX, startY), (endX, endY), colors[idx], 5)
         y = startY - 15 if startY - 15 > 15 else startY + 15
         cv2.putText(image, label, (startX, y), cv2.FONT_HERSHEY_SIMPLEX, 1.5, colors[idx], 5)

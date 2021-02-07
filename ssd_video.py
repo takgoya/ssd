@@ -20,7 +20,7 @@ conf = json.load(open(args["conf"]))
 '''
 Input video 
 '''
-print("[INFO] loading video from file ...")
+print("[SSD] loading video from file ...")
 
 # load input video
 vs = cv2.VideoCapture(conf["video_input"])
@@ -35,11 +35,11 @@ h, w = None, None
 try:
     prop = cv2.CAP_PROP_FRAME_COUNT
     total = int(vs.get(prop))
-    print("[INFO] {} total frames in video".format(total))
+    print("[SSD] {} total frames in video".format(total))
 # an error occurred while trying to determine the total number of frames in the video file
 except:
-    print("[INFO] could not determine # of frames in video")
-    print("[INFO] no approx. completion time can be provided")
+    print("[SSD] could not determine # of frames in video")
+    print("[SSD] no approx. completion time can be provided")
     total = -1
 
 '''
@@ -56,9 +56,13 @@ prototxt_path = conf["prototxt"]
 model_path = conf["model"]
 
 # load SSD model from disk
-print("[INFO] loading SSD model from disk...")
+print("[SSD] loading model ...")
+start_time = time.time()
+print("[SSD] loading SSD model from disk...")
 net = cv2.dnn.readNetFromCaffe(prototxt_path, model_path)
-
+end_time = time.time()
+elapsed_time = end_time - start_time
+print("[SSD] model loaded ... took {} seconds".format(elapsed_time))
 # set minimum probability to filter weak detections
 minimum_probability = conf["confidence"]
 
@@ -146,19 +150,19 @@ while True:
         # some information on processing single frame
         if total > 0:
             elap = (end - start)
-            print("[INFO] single frame took {:.4f} seconds".format(elap))
-            print("[INFO] estimated total time to finish: {:.4f}".format(elap * total))
+            print("[SSD] single frame took {:.4f} seconds".format(elap))
+            print("[SSD] estimated total time to finish: {:.4f}".format(elap * total))
 
     # write processed current frame to the file
     writer.write(frame)
     
 # print final results
 print()
-print("[INFO] total number of frames", f)
-print("[INFO] total amount of time {:.5f} seconds".format(t))
-print("[INFO] fps:", round((f / t), 1))
+print("[SSD] total number of frames", f)
+print("[SSD] total amount of time {:.5f} seconds".format(t))
+print("[SSD] fps:", round((f / t), 1))
 print()
-print("[INFO] cleaning up")
+print("[SSD] cleaning up")
 
 # release video reader and writer
 vs.release()
