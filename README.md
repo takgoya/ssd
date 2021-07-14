@@ -9,7 +9,7 @@ SSD object detector with Caffe and Openv dnn module
 
 - Detecciones sobre archivo de vídeo --> **ssd_video.py**
 
-- Detecciones sobre una imágen --> **ssd_image.py**
+- Detecciones sobre una imagen --> **ssd_image.py**
 
 - Fichero de configuración --> **conf.json**
  
